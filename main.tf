@@ -84,3 +84,23 @@ resource "google_compute_instance_group_manager" "test_instance_group" {
 #  }
 
 ##  Import Provisioned VM to Terraform ##
+
+resource "google_compute_instance" "base_vm" {
+  name         = "base-vm"
+  machine_type = "e2-medium"
+  zone         = "us-central1-a"
+
+  boot_disk {
+    initialize_params {
+      image = "ubuntu-os-cloud/ubuntu-1804-lts"
+    }
+  }
+
+  network_interface {
+    network = "default"
+
+    access_config {
+      // Ephemeral public IP
+    }
+  }
+}

@@ -4,6 +4,11 @@ pipeline {
             GIT_REPO = 'https://github.com/Rajitha-Alawatta/Infrastucture_Provisioning.git'
             REPO_FOLDER = 'Infrastucture_Provisioning'
             OS = 'webserver-image'
+            IMAGE_NAME = "test-image"
+            PROJECT = "test-environment-262811"
+            SOURCE_VM = "base-vm"
+            SOURCE_DISK_ZONE = "us-central1-a"
+            STORAGE_LOCATION = "us"
             PRIVATE_KEY = '/home/jenkins/.ssh/id_rsa'
 
         }
@@ -21,13 +26,8 @@ pipeline {
             }
         }
         stage('Create Image') {
-            environment {
-                new_image_name = "${OS}"
-            }
             steps {
-                sh """ 
-                packer build ./packer.json
-                """
+                sh "gcloud compute images create ${IMAGE_NAME} --project=${PROJECT} --source-disk=${SOURCE_VM} --source-disk-zone=${SOURCE_DISK_ZONE} --storage-location=${STORAGE_LOCATION}"
             }
         }
         stage('Initialize Terraform') {
@@ -47,11 +47,8 @@ pipeline {
             }         
         }
         stage('Terraform Apply') {
-            environment {
-                new_image_name = "${OS}"
-            }
             steps {
-                sh "terraform apply -var 'image_name=${new_image_name}' -auto-approve "
+                sh "terraform apply -var 'image_name=${IMAGE_NAME}' -auto-approve "
             }         
         }
     }
