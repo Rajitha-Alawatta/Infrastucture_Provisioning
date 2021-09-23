@@ -1,7 +1,7 @@
 provider "google" {
   project     = "${var.gcp_project_id}"
   region      = "${var.region}"
-  credentials = "${file("terraform.json")}"
+  credentials = "${file("credenntials.json")}"
   #version = "~> 1.60.1"
 }
 
