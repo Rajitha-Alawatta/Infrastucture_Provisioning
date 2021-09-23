@@ -82,3 +82,5 @@ resource "google_compute_instance_group_manager" "test_instance_group" {
 #    request_path = "/healthz"
 #    port         = "8080"
 #  }
+
+##  Import Provisioned VM to Terraform ##
