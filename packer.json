@@ -1,0 +1,21 @@
+{
+    "builders": [
+      {
+        "type": "googlecompute",
+        "account_file": "credentials.json",
+        "project_id": "test-environment-262811",
+        "source_image": "centos-7-v20200403",
+        "ssh_username": "packer",
+        "zone": "us-central1-a",
+        "image_name": "centos-cloud/centos-7",
+        "disk_size": 20
+      }
+    ],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "script.sh",
+            "destination": "/tmp/script.sh"
+        }
+    ]
+  }
