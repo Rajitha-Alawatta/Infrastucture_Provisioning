@@ -10,6 +10,8 @@ pipeline {
             SOURCE_DISK_ZONE = "us-central1-a"
             STORAGE_LOCATION = "us"
             PRIVATE_KEY = '/home/jenkins/.ssh/id_rsa'
+            SERVICE_ACCOUNT_NAME = 'jenkins-svc-account@test-environment-262811.iam.gserviceaccount.com'
+            FILE_PATH = '/var/lib/jenkins/service_accounts_gcp/'
 
         }
 
@@ -23,6 +25,16 @@ pipeline {
             steps {
                 sh "rm -rf ${REPO_FOLDER}"
                 sh "git clone ${GIT_REPO}"
+            }
+        }
+        stage('Set Service Account') {
+            steps {
+                sh "gcloud auth activate-service-account ${SERVICE_ACCOUNT_NAME} --key-file=${FILE_PATH}"
+            }
+        }
+        stage('Set GCP Project - Test') {
+            steps {
+                sh "gcloud config set project ${TEST_PROJECT_ID}"
             }
         }
         stage('Create Image') {
